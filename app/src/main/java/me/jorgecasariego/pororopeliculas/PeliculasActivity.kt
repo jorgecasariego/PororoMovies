@@ -10,6 +10,9 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
@@ -23,25 +26,17 @@ import kotlinx.coroutines.withContext
 import me.jorgecasariego.pororopeliculas.database.PeliculasDatabase
 import me.jorgecasariego.pororopeliculas.model.Model
 import me.jorgecasariego.pororopeliculas.network.MovieDbApi
+import me.jorgecasariego.pororopeliculas.ui.viewModels.PeliculasViewModel
+import me.jorgecasariego.pororopeliculas.ui.viewholders.MovieItem
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class PeliculasActivity : AppCompatActivity(), PeliculaInterface {
-    override fun OnFavoritoClicked(pelicula: Model.Movie) {
-        val resultado = peliculasDatabase.insertarPeliculaFavorita(pelicula)
-
-        if (resultado) {
-            Toast.makeText(this, "Pelicula favorita guardada exitosamente", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    private  val movieDbApi by lazy {
-        MovieDbApi.create()
-    }
 
     lateinit var peliculasDatabase: PeliculasDatabase
     val adapter = GroupAdapter<ViewHolder>()
+    private lateinit var viewModel: PeliculasViewModel
 
     companion object {
         val PAGE = 1
@@ -54,28 +49,27 @@ class PeliculasActivity : AppCompatActivity(), PeliculaInterface {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_peliculas)
 
-        peliculasDatabase = PeliculasDatabase(this)
+        setupViewModel()
 
-        lifecycleScope.launch {
-            val peliculas = getPeliculas()
-            peliculas?.forEach {
+        peliculasDatabase = PeliculasDatabase( this)
+
+    }
+
+    private fun setupViewModel() {
+        viewModel = ViewModelProvider(this).get(PeliculasViewModel::class.java)
+        viewModel.movies.observe(this, Observer { movies ->
+            movies?.forEach {
                 adapter.add(
-                        MoviewItem(
+                        MovieItem(
                                 it,
                                 this@PeliculasActivity,
                                 this@PeliculasActivity))
             }
 
             listado_peliculas.adapter = adapter
-        }
-
+        })
     }
 
-    private suspend fun getPeliculas(): List<Model.Movie>? {
-        return withContext(Dispatchers.IO) {
-            movieDbApi.getMovies(CATEGORY, API_KEY, LANGUAGE, PAGE).body()?.results
-        }
-    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -90,55 +84,18 @@ class PeliculasActivity : AppCompatActivity(), PeliculaInterface {
 
         return super.onOptionsItemSelected(item)
     }
+
+    override fun OnFavoritoClicked(pelicula: Model.Movie) {
+        val resultado = peliculasDatabase.insertarPeliculaFavorita(pelicula)
+
+        if (resultado) {
+            Toast.makeText(this, "Pelicula favorita guardada exitosamente", Toast.LENGTH_LONG).show()
+        }
+    }
 }
 
 interface PeliculaInterface {
     fun OnFavoritoClicked(pelicula: Model.Movie)
-}
-
-class MoviewItem(
-        val pelicula: Model.Movie,
-        val context: Context,
-        val listener: PeliculaInterface): Item<ViewHolder>() {
-
-    companion object {
-        val imageUrlBase = "https://image.tmdb.org/t/p/w500"
-    }
-    override fun getLayout(): Int {
-        return R.layout.movie_item
-    }
-
-    override fun bind(viewHolder: ViewHolder, position: Int) {
-        viewHolder.itemView.nombre_pelicula.text = pelicula.title
-        viewHolder.itemView.sinopsis_pelicula.text = pelicula.overview
-        viewHolder.itemView.estreno_pelicula.text = pelicula.release_date
-
-        Picasso.get().load(imageUrlBase + pelicula.poster_path)
-                .into(viewHolder.itemView.imagen_pelicula)
-
-        if (pelicula.es_favorito) {
-            viewHolder.itemView.favorito.setImageDrawable(
-                    ContextCompat.getDrawable(context, R.drawable.ic_favorite_red))
-        } else {
-            viewHolder.itemView.favorito.setImageDrawable(
-                    ContextCompat.getDrawable(context, R.drawable.ic_favorite_white))
-        }
-
-        viewHolder.itemView.favorito.setOnClickListener {
-            if (pelicula.es_favorito) {
-                viewHolder.itemView.favorito.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.ic_favorite_white))
-            } else {
-                viewHolder.itemView.favorito.setImageDrawable(
-                        ContextCompat.getDrawable(context, R.drawable.ic_favorite_red))
-            }
-
-            pelicula.es_favorito = !pelicula.es_favorito
-
-            listener.OnFavoritoClicked(pelicula)
-        }
-    }
-
 }
 
 
