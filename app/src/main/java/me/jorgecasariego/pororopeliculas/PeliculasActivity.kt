@@ -10,12 +10,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_peliculas.*
 import kotlinx.android.synthetic.main.movie_item.view.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import me.jorgecasariego.pororopeliculas.database.PeliculasDatabase
 import me.jorgecasariego.pororopeliculas.model.Model
 import me.jorgecasariego.pororopeliculas.network.MovieDbApi
@@ -37,6 +41,7 @@ class PeliculasActivity : AppCompatActivity(), PeliculaInterface {
     }
 
     lateinit var peliculasDatabase: PeliculasDatabase
+    val adapter = GroupAdapter<ViewHolder>()
 
     companion object {
         val PAGE = 1
@@ -51,43 +56,25 @@ class PeliculasActivity : AppCompatActivity(), PeliculaInterface {
 
         peliculasDatabase = PeliculasDatabase(this)
 
-        getPeliculas()
+        lifecycleScope.launch {
+            val peliculas = getPeliculas()
+            peliculas?.forEach {
+                adapter.add(
+                        MoviewItem(
+                                it,
+                                this@PeliculasActivity,
+                                this@PeliculasActivity))
+            }
+
+            listado_peliculas.adapter = adapter
+        }
+
     }
 
-    private fun getPeliculas() {
-        val call = movieDbApi.getMovies(CATEGORY, API_KEY, LANGUAGE, PAGE)
-
-        call.enqueue(object : Callback<Model.MovieResults> {
-            override fun onFailure(call: Call<Model.MovieResults>?, t: Throwable?) {
-                Toast.makeText(this@PeliculasActivity,
-                        "Fallo al obtener peliculas",
-                        Toast.LENGTH_LONG).show()
-            }
-
-            override fun onResponse(call: Call<Model.MovieResults>?,
-                                    response: Response<Model.MovieResults>?) {
-
-                if (response != null) {
-                    val peliculas: Model.MovieResults? = response.body()
-
-                    Log.d("TEST", "Cantidad de peliculas es : ${peliculas?.total_results}");
-
-                    val adapter = GroupAdapter<ViewHolder>()
-
-                    peliculas?.results?.forEach {
-                        adapter.add(
-                                MoviewItem(
-                                        it,
-                                        this@PeliculasActivity,
-                                        this@PeliculasActivity))
-                    }
-
-                    listado_peliculas.adapter = adapter
-                }
-
-            }
-
-        })
+    private suspend fun getPeliculas(): List<Model.Movie>? {
+        return withContext(Dispatchers.IO) {
+            movieDbApi.getMovies(CATEGORY, API_KEY, LANGUAGE, PAGE).body()?.results
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

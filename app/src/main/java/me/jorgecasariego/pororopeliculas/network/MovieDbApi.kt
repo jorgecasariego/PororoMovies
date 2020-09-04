@@ -2,6 +2,7 @@ package me.jorgecasariego.pororopeliculas.network
 
 import me.jorgecasariego.pororopeliculas.model.Model
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
@@ -11,12 +12,12 @@ import retrofit2.http.Query
 interface MovieDbApi {
 
     @GET("movie/{category}")
-    fun getMovies(
+    suspend fun getMovies(
             @Path("category") category: String,
             @Query("api_key") apiKey: String,
             @Query("language") language: String,
             @Query("page") page: Int
-    ): Call<Model.MovieResults>
+    ): Response<Model.MovieResults>
 
 
     companion object {
