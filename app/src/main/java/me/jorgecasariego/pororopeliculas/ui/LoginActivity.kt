@@ -1,4 +1,4 @@
-package me.jorgecasariego.pororopeliculas
+package me.jorgecasariego.pororopeliculas.ui
 
 import android.content.Context
 import android.content.Intent
@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_login.*
+import me.jorgecasariego.pororopeliculas.R
 
 class LoginActivity : AppCompatActivity() {
     val keyUsuarioSP = "keyUsuarioSP"

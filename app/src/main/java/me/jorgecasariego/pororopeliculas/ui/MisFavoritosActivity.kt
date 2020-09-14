@@ -1,4 +1,4 @@
-package me.jorgecasariego.pororopeliculas
+package me.jorgecasariego.pororopeliculas.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +7,7 @@ import android.view.MenuItem
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_mis_favoritos.*
+import me.jorgecasariego.pororopeliculas.R
 import me.jorgecasariego.pororopeliculas.database.PeliculasDatabase
 import me.jorgecasariego.pororopeliculas.model.Model
 import me.jorgecasariego.pororopeliculas.ui.viewholders.MovieItem

@@ -6,7 +6,7 @@ import com.squareup.picasso.Picasso
 import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.movie_item.view.*
-import me.jorgecasariego.pororopeliculas.PeliculaInterface
+import me.jorgecasariego.pororopeliculas.ui.PeliculaInterface
 import me.jorgecasariego.pororopeliculas.R
 import me.jorgecasariego.pororopeliculas.model.Model
 

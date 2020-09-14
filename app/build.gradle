@@ -4,6 +4,10 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: 'kotlin-kapt'
+
+apply plugin: 'androidx.navigation.safeargs'
+
 android {
     compileSdkVersion 29
     defaultConfig {
@@ -25,12 +29,22 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    dataBinding {
+        enabled = true
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.0'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.0'
+    implementation 'com.google.android.material:material:1.2.1'
     testImplementation 'junit:junit:4.13'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
@@ -48,4 +62,14 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.2.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.0-alpha07"
+
+    //kodein dependency injection
+    implementation "org.kodein.di:kodein-di-generic-jvm:6.2.1"
+    implementation "org.kodein.di:kodein-di-framework-android-x:6.2.1"
+
+    // Android Room
+    implementation "androidx.room:room-runtime:2.2.5"
+    implementation "androidx.room:room-ktx:2.2.5"
+    kapt "androidx.room:room-compiler:2.2.5"
+
 }

@@ -1,36 +1,22 @@
-package me.jorgecasariego.pororopeliculas
+package me.jorgecasariego.pororopeliculas.ui
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.squareup.picasso.Picasso
 import com.xwray.groupie.GroupAdapter
-import com.xwray.groupie.Item
 import com.xwray.groupie.ViewHolder
 import kotlinx.android.synthetic.main.activity_peliculas.*
-import kotlinx.android.synthetic.main.movie_item.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import me.jorgecasariego.pororopeliculas.R
 import me.jorgecasariego.pororopeliculas.database.PeliculasDatabase
 import me.jorgecasariego.pororopeliculas.model.Model
-import me.jorgecasariego.pororopeliculas.network.MovieDbApi
 import me.jorgecasariego.pororopeliculas.ui.viewModels.PeliculasViewModel
 import me.jorgecasariego.pororopeliculas.ui.viewholders.MovieItem
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class PeliculasActivity : AppCompatActivity(), PeliculaInterface {
 

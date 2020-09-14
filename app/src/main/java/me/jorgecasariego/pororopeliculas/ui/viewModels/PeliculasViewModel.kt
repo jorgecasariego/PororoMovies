@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import me.jorgecasariego.pororopeliculas.PeliculasActivity
+import me.jorgecasariego.pororopeliculas.ui.PeliculasActivity
 import me.jorgecasariego.pororopeliculas.model.Model
 import me.jorgecasariego.pororopeliculas.network.MovieDbApi
 

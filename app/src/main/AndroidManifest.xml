@@ -11,9 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".ui.SignUpActivitity"
+            android:label="@string/title_activity_sign_up_activitity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".ui.LoginActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,8 +24,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PeliculasActivity" />
-        <activity android:name=".MisFavoritosActivity"></activity>
+        <activity android:name=".ui.PeliculasActivity" />
+        <activity android:name=".ui.MisFavoritosActivity" />
     </application>
 
 </manifest>
