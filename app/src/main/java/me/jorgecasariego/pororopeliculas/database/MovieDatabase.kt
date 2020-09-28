@@ -32,7 +32,7 @@ abstract class MovieDatabase: RoomDatabase() {
                     INSTANCE = Room.databaseBuilder(
                             context.applicationContext,
                             MovieDatabase::class.java,
-                            "${currentLoggedUser.username}.db"
+                            "${currentLoggedUser.email}.db"
                     ).build()
                 }
             }

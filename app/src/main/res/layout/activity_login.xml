@@ -22,15 +22,16 @@
         android:layout_marginTop="30sp"/>
 
     <EditText
-        android:id="@+id/nombre"
+        android:id="@+id/editText_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="User"
+        android:inputType="textEmailAddress"
         android:textColorHint="@android:color/darker_gray"
         android:layout_marginTop="70dp"/>
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/editText_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Password"
@@ -39,14 +40,14 @@
         android:layout_marginTop="20dp"/>
 
     <Button
-        android:id="@+id/ingresar_usuario"
+        android:id="@+id/button_signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign in"
         android:layout_marginTop="40dp"/>
 
     <Button
-        android:id="@+id/registrar_usuario"
+        android:id="@+id/button_signUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Sign up"

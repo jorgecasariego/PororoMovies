@@ -14,4 +14,7 @@ class ConfigRepository(
 
     override fun getCurrentUserInfo() =
         localConfigDataSource.getCurrentUserInfo()
+
+    override fun getCurrentUserInfoByEmail(email: String) =
+            localConfigDataSource.getCurrentUserInfoByEmail(email = email)
 }

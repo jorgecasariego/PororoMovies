@@ -1,27 +1,29 @@
 package me.jorgecasariego.pororopeliculas.ui.movie
 
+import android.os.Bundle
+import android.view.View
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.xwray.groupie.GroupAdapter
 import com.xwray.groupie.ViewHolder
-import kotlinx.android.synthetic.main.fragment_movies.*
 import me.jorgecasariego.pororopeliculas.R
 import me.jorgecasariego.pororopeliculas.databinding.FragmentMoviesBinding
-import me.jorgecasariego.pororopeliculas.ui.base.BaseFragment
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
-class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
+class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     val adapter = GroupAdapter<ViewHolder>()
     private val viewModel: MoviesViewModel by sharedViewModel()
     private lateinit var viewBinding: FragmentMoviesBinding
 
-    override fun layout() = R.layout.fragment_movies
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onUICreated(viewBinding: FragmentMoviesBinding) {
-        this.viewBinding = viewBinding
+        viewBinding = FragmentMoviesBinding.bind(view)
 
         initUI()
     }
+
 
     private fun initUI() {
         setupObserver()
@@ -33,7 +35,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
     }
 
     private fun setupObserver() {
-        viewModel.movies.observe(this, Observer { movies ->
+        viewModel.movies.observe(viewLifecycleOwner, Observer { movies ->
             movies?.forEach {
                 adapter.add(
                         MovieItem(
@@ -41,10 +43,9 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
                                 requireContext()))
             }
 
-            listado_peliculas.adapter = adapter
+            viewBinding.listadoPeliculas.adapter = adapter
         })
     }
-
 
 //    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
 //        val inflater: MenuInflater = menuInflater

@@ -1,6 +1,7 @@
 package me.jorgecasariego.pororopeliculas.model
 
 data class UserInformation(
-        val username: String,
+        val name: String,
+        val email: String,
         val password: String
 )

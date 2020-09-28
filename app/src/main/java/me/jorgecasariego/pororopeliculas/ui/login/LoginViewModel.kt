@@ -11,4 +11,7 @@ class LoginViewModel(
     fun setUserInfo(userInfo: UserInformation) {
         configRepository.setUserInfo(userInfo)
     }
+
+    fun getUserInfoByEmail(email: String) =
+        configRepository.getCurrentUserInfoByEmail(email = email)
 }
